@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write PR Comment"
+  short_description: "Draft clear, actionable pull request comments"
+  default_prompt: "Use $write-pr-comment to draft a structured comment for this pull request."
