@@ -1,36 +1,34 @@
 ---
 name: write-pr-description
-description: A good and concise structure for a GitHub pull request description. Use this skill to generate a PR description for your work. It will help you to write a clear and concise description that will help reviewers understand your changes.
+description: Draft concise, reviewer-focused GitHub pull request descriptions from diffs, commits, test results, issue context, or user notes. Use when asked to write, rewrite, improve, or review a PR body; summarize changes; identify review starting points; document verification; or visualize a changed flow.
 ---
 
-# PR Description Structure Overview
+# Write a PR Description
 
-Target: a reviewer should know what to look at and why within 60 seconds of skimming. The description is small and essential — every sentence must help them review; when in doubt, cut. Optional sections (diagram, data transformation, "Also in this PR") are omitted entirely when they don't apply, never filled with placeholder text.
+Help a reviewer understand why the change exists, what behavior changed, where to start, and how it was verified within 60 seconds.
 
-### TL;DR
+Assume the reviewer has the diff open. Explain intent, behavior, risk, and verification—not implementation already visible in the code. Use only supported facts, never invent paths or results, and omit empty sections.
 
-One or two sentences at the very top: the bug/goal and the fix, plain language. No section header needed — it's the opening paragraph.
+## Opening
 
-### What changed
+Start with one or two plain-language sentences stating the bug or goal and the fix. Do not add a TL;DR heading.
 
-- One bullet per logical change. Lead each bullet with the change, not the backstory.
-- Max ~6 bullets. If you have more, the extras are probably drive-by fixes — move them to "Also in this PR".
-- State behavior before → behavior after when it fits in the same line ("disable used to force `private`; now restores the recorded status").
-- Root-cause context is welcome but capped at 2–3 sentences before the bullets. Don't retell the whole investigation.
+## What changed
 
-### Also in this PR
+- Use one bullet per logical behavior change, with about six bullets maximum.
+- Lead with the outcome, not the implementation or investigation.
+- Use a short before → after comparison when helpful.
+- Recommend a separate PR for unrelated changes.
 
-Drive-by fixes, hardening, and CI changes that aren't the core change. Keeping them separate tells the reviewer what needs deep review vs. a glance. One line each. Omit the section if empty.
+## Where to start reviewing
 
-### Where to start reviewing
+For non-trivial PRs, name 2–4 real paths and the function or reason to inspect each. Identify mechanical or generated changes that only need a skim. Omit this section when repository context is unavailable rather than inventing paths.
 
-2–4 lines pointing at the heart of the diff. Each line names a real path from the repo (`includes/functions/helpers.php`, `src/import/`) plus the function or reason to look there — never a vague area like "the admin code". Say which files are mechanical (renames, test fixtures, one-liners, generated) so the reviewer knows what to skim. This is the highest-value section for a reviewer — don't skip it on non-trivial PRs.
+## Visualize changed flows
 
-### Mermaid diagram
+Use a small Mermaid diagram when it replaces a longer technical explanation. Show behavior and relationships rather than code-level implementation. Diagram only the new flow, and name the section after what it shows, such as `Import flow`.
 
-Include one only when the PR changes a flow or lifecycle — not for simple fixes. Name the section after what it shows ("Lifecycle after this PR", "Import flow"), not "Mermaid diagram". Rules:
-
-- Color-code nodes by what this PR did to them, and include a legend:
+Highlight additions and changed behavior when useful:
 
 ```mermaid
 flowchart TD
@@ -39,32 +37,29 @@ flowchart TD
 
     classDef added fill:#1a7f37,color:#fff,stroke:#1a7f37
     classDef changed fill:#9a6700,color:#fff,stroke:#9a6700
-    %% unchanged nodes keep the default style
 ```
 
-- Legend line under the diagram: 🟩 green = added by this PR, 🟨 amber = behavior changed, gray/default = untouched.
-- Use explicit `fill` + `color` so it stays readable in GitHub dark mode.
-- Diagram the *new* behavior; don't draw before-and-after twins.
+Add a text legend: 🟩 added, 🟨 changed, gray/default unchanged. Keep labels understandable without relying on color alone. Omit the diagram when prose is shorter.
 
-### Data transformation
+## Data changes
 
-If the PR adds/changes stored data (DB columns, meta keys, file formats, API payloads): a small table with key, value, and lifetime/owner, plus a one-line before → after. Omit otherwise.
+When stored data or an API payload changes, use a small table showing the key, value, and owner or lifetime, plus one before → after line. Omit otherwise.
 
-### QA instructions
+## Verification
 
-- Numbered steps a human can follow, each ending with the expected observable result.
-- Only list steps NOT covered by automated tests; state what the tests already cover in one closing line ("`tests/page-state-test.php` covers steps 1–3 via the real AJAX handler").
-- Include the regression check for the original bug as step 1.
+- State the checks actually run and their results.
+- Add numbered manual steps only when they provide useful coverage beyond automation; end each step with the expected result.
+- Put the original regression scenario first when manual verification adds value.
+- Never claim a check passed without evidence.
 
-### PR metadata
+## Metadata
 
-Issue links (`Fixes #123`), base branch if not default, related PRs. Use GitHub's native linking keywords so the issue auto-closes.
+Add issue links such as `Fixes #123`, a non-default base branch, and related PRs when known.
 
 ## Do not include
 
-- Self-praise or narrative color: "good citizen", "robust", "comprehensive", "along the way", "properly". Describe the change; let the reviewer judge it.
-- The investigation story. The PR shows the destination, not the journey.
-- Restating the diff line-by-line — the reviewer has the diff open.
-- Bold-word emphasis scattered through prose; bold only labels.
-- Sensitive information (secrets, API keys, customer data).
-- Jargon or codenames invented during the work that don't appear in the code.
+- A line-by-line retelling of the diff.
+- Investigation history or obvious implementation details.
+- Self-praise such as “robust,” “comprehensive,” or “properly.”
+- Empty sections, placeholders, invented facts, or sensitive information.
+- Jargon or codenames that do not appear in the product or code.
