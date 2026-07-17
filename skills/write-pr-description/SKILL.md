@@ -43,14 +43,18 @@ When stored data or an API payload changes, use a small table showing the key, v
 
 ## Verification
 
-- State the checks actually run and their results.
-- Add numbered manual steps only when they provide useful coverage beyond automation; end each step with the expected result.
-- Put the original regression scenario first when manual verification adds value.
+- Report what behavior is now proven, not how the tools were invoked: name the scenarios the new tests lock in.
+- No command lines, local paths, env vars, or raw counts ("9 tests, 40 assertions") — "new tests cover X, Y, Z" is the whole story.
+- Skip routine checks CI already reports (lint, static analysis, formatting) unless one is the point of the PR.
+- A pre-existing unrelated failure gets one short clause at most, never its internals.
+- Add numbered manual steps only when they provide useful coverage beyond automation; end each step with the expected result, original regression scenario first.
 - Never claim a check passed without evidence.
 
 ## Link the issue on GitHub
 
 When GitHub access is available and the issue is known, link the pull request through GitHub's native **Development** sidebar. Treat this as GitHub metadata, not a section in the PR description.
+
+Link the pull request itself, never the branch. A branch named after the issue (such as `bugfix/686`) shows up in Development as a branch link — that is not enough; verify the Development section lists the PR and remove leftover branch-only links.
 
 Do not add a closing keyword by default. Use `Fixes #123` only when the user explicitly wants automatic closure and the pull request targets the repository's default branch. If GitHub access is unavailable, mention outside the ready-to-paste description that the issue still needs to be linked.
 
