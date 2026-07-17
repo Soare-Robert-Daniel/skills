@@ -5,7 +5,7 @@ description: A good and concise structure for a GitHub pull request description.
 
 # PR Description Structure Overview
 
-Target: a reviewer should know what to look at and why within 60 seconds of skimming. Every sentence must help them review; anything else is cut.
+Target: a reviewer should know what to look at and why within 60 seconds of skimming. The description is small and essential — every sentence must help them review; when in doubt, cut. Optional sections (diagram, data transformation, "Also in this PR") are omitted entirely when they don't apply, never filled with placeholder text.
 
 ### TL;DR
 
@@ -24,11 +24,11 @@ Drive-by fixes, hardening, and CI changes that aren't the core change. Keeping t
 
 ### Where to start reviewing
 
-2–4 lines pointing at the heart of the diff: the file/function carrying the behavior change, and which files are mechanical (renames, test fixtures, generated). This is the highest-value section for a reviewer — don't skip it on non-trivial PRs.
+2–4 lines pointing at the heart of the diff. Each line names a real path from the repo (`includes/functions/helpers.php`, `src/import/`) plus the function or reason to look there — never a vague area like "the admin code". Say which files are mechanical (renames, test fixtures, one-liners, generated) so the reviewer knows what to skim. This is the highest-value section for a reviewer — don't skip it on non-trivial PRs.
 
 ### Mermaid diagram
 
-Include one only when the PR changes a flow or lifecycle — not for simple fixes. Rules:
+Include one only when the PR changes a flow or lifecycle — not for simple fixes. Name the section after what it shows ("Lifecycle after this PR", "Import flow"), not "Mermaid diagram". Rules:
 
 - Color-code nodes by what this PR did to them, and include a legend:
 
