@@ -9,7 +9,7 @@ description: A good and concise structure for a GitHub pull request description.
 
 Explain in simple terms what changed in this pull request without being too verbose or technical. Focus on the high-level changes and their impact.
 
-### Mermaid Diagram
+### Mermaid diagram
 
 If applicable, include a mermaid diagram to illustrate the changes made in this pull request. This can help reviewers visualize the flow or structure of the code.
 
@@ -34,4 +34,3 @@ Also use native GitHub features like linking issues and pull requests to provide
 - Avoid including any sensitive information, such as passwords or API keys, in the pull request description. This can pose a security risk and should be avoided at all costs.
 - Avoid including any irrelevant information that does not pertain to the changes made in this pull request. This can include personal opinions, unrelated code snippets, or any other information that does not provide value to the reviewers.
 - Avoid including any unnecessary technical jargon or complex explanations that may confuse reviewers. Instead, focus on providing clear and concise explanations that are easy to understand.
-- Avoid including any information that is not directly related to the changes made in this pull request. This can include unrelated code snippets, personal opinions, or any other information that does not provide value to the reviewers.

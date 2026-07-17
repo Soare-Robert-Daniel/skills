@@ -6,14 +6,15 @@ Reusable skills for AI coding agents, distributed through the [`skills`](https:/
 
 ### `write-pr-description`
 
-Draft clear, evidence-based pull request comments for:
+Draft clear, evidence-based pull request descriptions with:
 
-- Review summaries and change requests
-- Implementation updates
-- Responses to reviewer feedback
-- Inline review comments
+- A concise summary of what changed
+- Optional architecture or flow diagrams
+- Data transformation notes (before/after when relevant)
+- QA and verification steps
+- Linked issue and PR metadata
 
-The skill returns a ready-to-paste draft by default. It posts a comment only when explicitly requested and when the agent has access to the pull request.
+The skill returns a ready-to-paste PR description.
 
 ## Install
 
@@ -22,7 +23,6 @@ Install globally for Codex:
 ```bash
 npx skills add Soare-Robert-Daniel/skills \
   --skill write-pr-description \
-  --agent codex \
   --global \
   --yes
 ```
@@ -41,13 +41,13 @@ Install from a local checkout while developing the skill:
 ```bash
 git clone https://github.com/Soare-Robert-Daniel/skills.git
 cd skills
-npx skills add . --skill write-pr-description --agent codex --global --yes
+npx skills add . --skill write-pr-description --global --yes
 ```
 
 Confirm the installation:
 
 ```bash
-npx skills list --global --agent codex
+npx skills list --global
 ```
 
 ## Use
@@ -55,33 +55,33 @@ npx skills list --global --agent codex
 Invoke the skill explicitly in Codex:
 
 ```text
-Use $write-pr-description to draft a review summary for this pull request.
+Use $write-pr-description to draft a complete pull request description for this diff.
 ```
 
 You can also provide the relevant context directly:
 
 ```text
-Use $write-pr-description to turn these notes into a concise PR comment:
+Use $write-pr-description to turn these notes into a concise PR description:
 - The null check is missing in src/user.ts:42.
 - Unit tests pass.
-- Request changes because this can crash for logged-out users.
+- Add a short QA section with exact reproduction and verification steps.
 ```
 
 More examples:
 
 ```text
-Use $write-pr-description to write an implementation update from the current diff and test results.
+Use $write-pr-description to write a PR description from the current diff and test results.
 ```
 
 ```text
-Use $write-pr-description to rewrite my response to this reviewer so it is direct and actionable.
+Use $write-pr-description to include a Mermaid diagram only if it clarifies the architecture changes.
 ```
 
 ```text
-Use $write-pr-description to draft an inline comment for src/api.ts:88. Mark it as blocking and explain the failure mode.
+Use $write-pr-description to include data transformation before/after examples and link related issues.
 ```
 
-The skill will use the pull request, diff, checks, and discussion when those are available to the agent. Otherwise, include that information in the prompt.
+The skill will use the pull request, diff, and checks when those are available to the agent. Otherwise, include that information in the prompt.
 
 ## Update or remove
 
@@ -90,5 +90,5 @@ npx skills update write-pr-description --global --yes
 ```
 
 ```bash
-npx skills remove write-pr-description --global --agent codex --yes
+npx skills remove write-pr-description --global --yes
 ```
