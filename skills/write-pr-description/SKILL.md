@@ -1,11 +1,11 @@
 ---
 name: write-pr-description
-description: Draft concise, reviewer-focused GitHub pull request descriptions from diffs, commits, test results, issue context, or user notes. Use when asked to write, rewrite, improve, or review a PR body; summarize changes; identify review starting points; document verification; or visualize a changed flow.
+description: Draft concise, reviewer-focused GitHub pull request descriptions from diffs, commits, test results, issue context, or user notes. Use when asked to write, rewrite, improve, or review a PR body; summarize changes; document verification; visualize a changed flow; or link a pull request to its issue.
 ---
 
 # Write a PR Description
 
-Help a reviewer understand why the change exists, what behavior changed, where to start, and how it was verified within 60 seconds.
+Help a reviewer understand why the change exists, what behavior changed, and how it was verified within 60 seconds.
 
 Assume the reviewer has the diff open. Explain intent, behavior, risk, and verification—not implementation already visible in the code. Use only supported facts, never invent paths or results, and omit empty sections.
 
@@ -19,10 +19,6 @@ Start with one or two plain-language sentences stating the bug or goal and the f
 - Lead with the outcome, not the implementation or investigation.
 - Use a short before → after comparison when helpful.
 - Recommend a separate PR for unrelated changes.
-
-## Where to start reviewing
-
-For non-trivial PRs, name 2–4 real paths and the function or reason to inspect each. Identify mechanical or generated changes that only need a skim. Omit this section when repository context is unavailable rather than inventing paths.
 
 ## Visualize changed flows
 
@@ -52,9 +48,11 @@ When stored data or an API payload changes, use a small table showing the key, v
 - Put the original regression scenario first when manual verification adds value.
 - Never claim a check passed without evidence.
 
-## Metadata
+## Link the issue on GitHub
 
-Add issue links such as `Fixes #123`, a non-default base branch, and related PRs when known.
+When GitHub access is available and the issue is known, link the pull request through GitHub's native **Development** sidebar. Treat this as GitHub metadata, not a section in the PR description.
+
+Do not add a closing keyword by default. Use `Fixes #123` only when the user explicitly wants automatic closure and the pull request targets the repository's default branch. If GitHub access is unavailable, mention outside the ready-to-paste description that the issue still needs to be linked.
 
 ## Do not include
 
