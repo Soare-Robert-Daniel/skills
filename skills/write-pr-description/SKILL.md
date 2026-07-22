@@ -7,9 +7,9 @@ description: Draft concise, reviewer-focused GitHub pull request descriptions fr
 
 ## 1. Purpose
 
-1.1. Help a reviewer understand why the change exists, what behavior changed, and how to QA it within 60 seconds.
+1.1. Help a reviewer understand the system context, why the change exists, what behavior changed, and how to QA it within 60 seconds.
 
-1.2. Assume the reviewer has the diff open. Explain intent, behavior, and risk—not implementation already visible in the code.
+1.2. Assume the reviewer has the diff open but may not know the affected code or workflow. Explain intent, end-to-end behavior, and risk—not implementation already visible in the code.
 
 1.3. Use only supported facts, never invent paths or results, and omit empty sections.
 
@@ -31,24 +31,42 @@ description: Draft concise, reviewer-focused GitHub pull request descriptions fr
 
 ## 4. Visualize changed flows
 
-4.1. Use a small Mermaid diagram when it replaces a longer technical explanation. Show behavior and relationships rather than code-level implementation.
+4.1. Include a Mermaid diagram by default when a change affects a workflow, background job, retry, state transition, guard sequence, or interaction between components. Give an unfamiliar reviewer a high-level map of how the relevant system behaves after the change.
 
-4.2. Diagram only the new flow, and name the section after what it shows, such as `Import flow`.
+4.2. Show the post-change end-to-end flow, including enough unchanged context to explain where the changed behavior sits. Do not create separate before and after diagrams unless the structural difference cannot be understood through highlighting. Name the section after what it shows, such as `Import flow`.
 
-4.3. Highlight additions and changed behavior when useful:
+4.3. Include the trigger, important decisions, component boundaries, failure or retry paths when relevant, and terminal outcomes. Keep the overview compact—prefer about ten nodes or fewer, collapse code-level details, and use the same product terms as the prose. Use named subgraphs sparingly when ownership across components would otherwise be unclear.
+
+4.4. Make every decision complete and logically consistent. Its outgoing labels must answer the question, be mutually exclusive, and cover relevant exceptions. Prefer `Yes`/`No` when the criteria fit inside the decision; otherwise state the criteria on both branches.
+
+4.5. Apply status styling to the step or decision whose behavior changed, not to an unchanged downstream result:
+
+- `added`: a new step, check, or branch condition
+- `changed`: an existing step or decision whose rule changed
+- unstyled: behavior unchanged in this pull request
+
+Do not mark an existing outcome as added or changed merely because the pull request provides a new way to reach it.
+
+4.6. Encode status in text as well as color. Prefix highlighted node labels with `New:` or `Changed:`, render added behavior as solid green, and render changed behavior as dashed amber:
 
 ```mermaid
 flowchart TD
-    A[Existing step] --> B[New step]:::added
-    B --> C[Changed step]:::changed
+    A[Existing trigger] --> B{Changed:<br/>Superseding result exists?}:::changed
+    B -- "Yes: eligible newer result" --> C[Skip retry]
+    B -- "No: none, or newer result is ineligible" --> D[Retry]
+    D --> E{New:<br/>Output already delivered?}:::added
+    E -- Yes --> F[Stand down]
+    E -- No --> G[Process and send]
 
-    classDef added fill:#1a7f37,color:#fff,stroke:#1a7f37
-    classDef changed fill:#9a6700,color:#fff,stroke:#9a6700
+    classDef added fill:#1a7f37,color:#fff,stroke:#116329,stroke-width:3px
+    classDef changed fill:#9a6700,color:#fff,stroke:#5c3d00,stroke-width:3px,stroke-dasharray:6 3
 ```
 
-4.4. Add a text legend: 🟩 added, 🟨 changed, gray/default unchanged. Keep labels understandable without relying on color alone.
+**Legend:** green solid + `New` = added · amber dashed + `Changed` = modified · unhighlighted = unchanged
 
-4.5. Omit the diagram when prose is shorter.
+4.7. Put the matching text legend immediately below the diagram. Do not use emoji color swatches that differ from the actual fills, and do not call Mermaid's theme-dependent default color gray.
+
+4.8. Let the diagram carry sequence and branching. Keep accompanying bullets for outcomes, caveats, or risk instead of narrating every arrow again. Omit the diagram only when the change has no meaningful flow to visualize.
 
 ## 5. Data changes
 
