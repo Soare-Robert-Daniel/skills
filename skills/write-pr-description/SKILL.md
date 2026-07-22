@@ -19,6 +19,8 @@ description: Draft concise, reviewer-focused GitHub pull request descriptions fr
 
 2.2. Do not add a TL;DR heading.
 
+2.3. Name the system when referencing an external ticket or conversation — `[HelpScout conversation 3393395616](url)`, linked when possible. Never a bare `#id`: on GitHub it reads as an issue reference.
+
 ## 3. What changed
 
 3.1. Use one bullet per logical behavior change, with about six bullets maximum.
@@ -28,6 +30,10 @@ description: Draft concise, reviewer-focused GitHub pull request descriptions fr
 3.3. Use a short before → after comparison when helpful.
 
 3.4. Recommend a separate PR for unrelated changes.
+
+3.5. Start each bullet with the changed component in bold (`**Guard** — stands down when…`) so a reviewer can jump to the bullet matching the file they have open. Separate bullets with a blank line so GitHub renders a padded list.
+
+3.6. Put a cross-cutting caveat — an assumption the fix relies on, or intentional behavior a reviewer may read as a bug — in a `> [!NOTE]` callout after the bullets, not inline where it stretches a bullet.
 
 ## 4. Visualize changed flows
 
@@ -50,23 +56,22 @@ Do not mark an existing outcome as added or changed merely because the pull requ
 4.6. Encode status in text as well as color. Prefix highlighted node labels with `New:` or `Changed:`, render added behavior as solid green, and render changed behavior as dashed amber:
 
 ```mermaid
-flowchart TD
-    A[Existing trigger] --> B{Changed:<br/>Superseding result exists?}:::changed
-    B -- "Yes: eligible newer result" --> C[Skip retry]
-    B -- "No: none, or newer result is ineligible" --> D[Retry]
-    D --> E{New:<br/>Output already delivered?}:::added
-    E -- Yes --> F[Stand down]
-    E -- No --> G[Process and send]
+flowchart LR
+    A[Existing trigger] --> B{Changed:<br/>superseding<br/>result exists?}:::changed
+    B -- yes --> C[Skip retry]
+    B -- no --> D[Retry] --> E{New:<br/>output already<br/>delivered?}:::added
+    E -- yes --> F[Stand down]
+    E -- no --> G[Process and send]
 
     classDef added fill:#1a7f37,color:#fff,stroke:#116329,stroke-width:3px
     classDef changed fill:#9a6700,color:#fff,stroke:#5c3d00,stroke-width:3px,stroke-dasharray:6 3
 ```
 
-**Legend:** green solid + `New` = added · amber dashed + `Changed` = modified · unhighlighted = unchanged
-
-4.7. Put the matching text legend immediately below the diagram. Do not use emoji color swatches that differ from the actual fills, and do not call Mermaid's theme-dependent default color gray.
+4.7. Do not add a separate legend line — the `New:`/`Changed:` prefixes already carry status in text, and color is reinforcement, not the only signal.
 
 4.8. Let the diagram carry sequence and branching. Keep accompanying bullets for outcomes, caveats, or risk instead of narrating every arrow again. Omit the diagram only when the change has no meaningful flow to visualize.
+
+4.9. GitHub scales the rendered diagram to the page width, so on-screen text size is set by the diagram's geometry — font-size directives change nothing. Prefer `flowchart LR`, and keep decision labels to two or three short lines: Mermaid inscribes the text box inside a rhombus, so long labels balloon the shape and the whole diagram. When branch criteria do not fit a short edge label, state them in the prose bullets instead.
 
 ## 5. Data changes
 
@@ -78,9 +83,13 @@ flowchart TD
 
 6.1. Never write a Verification section — no test summaries, tool invocations, or raw counts, even when rewriting a description that had one. Tests are visible in the diff and CI reports the results.
 
-6.2. The only testing content is a QA section: numbered manual steps a QA person can follow, original regression scenario first, each step ending with the expected result.
+6.2. The only testing content is a QA section: numbered manual steps a QA person can follow, original regression scenario first. End each step with a standalone `**Expect:**` line stating the observable result, separated from the action.
 
 6.3. Omit the section when there is nothing meaningful to check by hand.
+
+6.4. Make setup actionable: when a step needs something a QA person cannot do through the product (plant a database row, mark a run failed), give the exact snippet — tinker, SQL, or CLI — in a fenced code block, plus any ordering constraint it depends on.
+
+6.5. Spend QA steps on what automated tests cannot cover — live third-party behavior, assumptions about external systems. Do not hand-replicate scenarios the diff's tests already prove.
 
 ## 7. Link the issue on GitHub
 
