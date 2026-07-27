@@ -93,13 +93,23 @@ flowchart LR
 
 ## 7. Link the issue on GitHub
 
-7.1. When GitHub access is available and the issue is known, link the pull request through GitHub's native **Development** sidebar. Treat this as GitHub metadata, not a section in the PR description.
+7.1. When the issue is known, always link it with a closing keyword on its own line at the end of the body. This is GitHub's only API-level linking mechanism — there is no REST or GraphQL mutation for it, so the keyword in the PR body *is* the API. GitHub then lists the PR under the issue's Development section and closes the issue on merge.
 
-7.2. Link the pull request itself, never the branch. A branch named after the issue (such as `bugfix/686`) shows up in Development as a branch link — that is not enough; verify the Development section lists the PR and remove leftover branch-only links.
+7.2. Derive the reference from the issue URL — `https://github.com/OWNER/REPO/issues/123`:
 
-7.3. Do not add a closing keyword by default. Use `Fixes #123` only when the user explicitly wants automatic closure and the pull request targets the repository's default branch.
+- Same repository as the PR: `Closes #123`
+- Different repository: `Closes OWNER/REPO#123`
+- Several issues: repeat the keyword for each — `Closes #123, closes OWNER/REPO#456`
 
-7.4. If GitHub access is unavailable, mention outside the ready-to-paste description that the issue still needs to be linked.
+7.3. Accepted keywords are `close`/`closes`/`closed`, `fix`/`fixes`/`fixed`, `resolve`/`resolves`/`resolved`. Prefer `Closes` for issues and `Fixes` for bugs. A bare `#123` without a keyword creates only a cross-reference, never a link.
+
+7.4. GitHub interprets the keyword only when the pull request targets the repository's **default branch**. When it targets anything else — a release or stacked branch — the keyword silently does nothing: link the PR through the **Development** sidebar instead and say so outside the ready-to-paste description.
+
+7.5. Keep the keyword in the PR body, not in a commit message. A keyword in a commit closes the issue but does not list the pull request as linked.
+
+7.6. Link the pull request itself, never the branch. A branch named after the issue (such as `bugfix/686`) shows up in Development as a branch link — that is not enough; verify the Development section lists the PR and remove leftover branch-only links.
+
+7.7. Automatic closure is the intended behavior here. Only when the user says the issue must stay open after merge, drop the keyword and link through the Development sidebar — GitHub offers no keyword that links without closing.
 
 ## 8. Do not include
 
