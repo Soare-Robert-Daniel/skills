@@ -85,11 +85,15 @@ flowchart LR
 
 6.2. The only testing content is a QA section: numbered manual steps a QA person can follow, original regression scenario first. End each step with a standalone `**Expect:**` line stating the observable result, separated from the action.
 
-6.3. Omit the section when there is nothing meaningful to check by hand.
+6.3. Spell out every screen a QA person has to go through to reach the setting a step touches, starting from a fixed place such as WP Admin and naming each menu, tab, and section along the way — `WP Admin → Media → Optimole → Settings → Advanced → Lazyload`, not "enable lazyload". Assume they have never opened the feature and should never have to hunt for it.
 
-6.4. Make setup actionable: when a step needs something a QA person cannot do through the product (plant a database row, mark a run failed), give the exact snippet — tinker, SQL, or CLI — in a fenced code block, plus any ordering constraint it depends on.
+6.4. Name what gates the path when it is not obvious: the role or capability required to see the menu, and any tab, accordion, or "Show advanced" control the setting hides behind. Where a URL is stable, give it instead of the path — `/wp-admin/options-general.php?page=optimole#advanced`.
 
-6.5. Spend QA steps on what automated tests cannot cover — live third-party behavior, assumptions about external systems. Do not hand-replicate scenarios the diff's tests already prove.
+6.5. Omit the section when there is nothing meaningful to check by hand.
+
+6.6. Make setup actionable: when a step needs something a QA person cannot do through the product (plant a database row, mark a run failed), give the exact snippet — tinker, SQL, or CLI — in a fenced code block, plus any ordering constraint it depends on.
+
+6.7. Spend QA steps on what automated tests cannot cover — live third-party behavior, assumptions about external systems. Do not hand-replicate scenarios the diff's tests already prove.
 
 ## 7. Link the issue on GitHub
 
