@@ -109,11 +109,15 @@ flowchart LR
 
 7.4. GitHub interprets the keyword only when the pull request targets the repository's **default branch**. When it targets anything else — a release or stacked branch — the keyword silently does nothing: link the PR through the **Development** sidebar instead and say so outside the ready-to-paste description.
 
-7.5. Keep the keyword in the PR body, not in a commit message. A keyword in a commit closes the issue but does not list the pull request as linked.
+7.5. Never change an existing pull request's target branch, and never suggest changing it, to make a closing keyword work. The target is a release decision; keyword linking is not a reason to touch it. Keep the keyword out and note the Development-sidebar step instead.
 
-7.6. Link the pull request itself, never the branch. A branch named after the issue (such as `bugfix/686`) shows up in Development as a branch link — that is not enough; verify the Development section lists the PR and remove leftover branch-only links.
+7.6. When opening a new pull request and the user has not named a target, default to `development` if that branch exists on the remote (`git ls-remote --heads origin development`), otherwise the repository's default branch.
 
-7.7. Automatic closure is the intended behavior here. Only when the user says the issue must stay open after merge, drop the keyword and link through the Development sidebar — GitHub offers no keyword that links without closing.
+7.7. Keep the keyword in the PR body, not in a commit message. A keyword in a commit closes the issue but does not list the pull request as linked.
+
+7.8. Link the pull request itself, never the branch. A branch named after the issue (such as `bugfix/686`) shows up in Development as a branch link — that is not enough; verify the Development section lists the PR and remove leftover branch-only links.
+
+7.9. Automatic closure is the intended behavior here. Only when the user says the issue must stay open after merge, drop the keyword and link through the Development sidebar — GitHub offers no keyword that links without closing.
 
 ## 8. Do not include
 
