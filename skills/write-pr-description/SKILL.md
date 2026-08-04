@@ -15,7 +15,7 @@ When asked to write or rewrite a PR description:
 
 1. **Gather the facts.** Read the diff, the commits, and any linked issue, ticket, or user notes. Use only facts that these sources support. Never invent a path, a setting name, or a result.
 2. **Classify the change.** The classification decides which sections the body gets:
-   - The pull request is one layer of a stack → stack overview (Section 1).
+   - The pull request is already one layer of a stack → stack overview (Section 1). Skip it for a standalone PR.
    - The change alters a workflow, background job, retry, state transition, or component interaction → Mermaid diagram (Section 4).
    - The change alters stored data or an API payload → data table (Section 5).
    - A person can check the change by hand → QA section (Section 6).
@@ -36,23 +36,27 @@ Write the description in ASD-STE100 (Simplified Technical English) style. The re
 - One term per concept in the whole description: pick one of check/verify/confirm, one of config/settings, and use no other.
 - Keep code, identifiers, flags, paths, and quoted errors exact — they are exempt from every rule and count as one word each.
 
-## 1. Stack overview
+## 1. Stack overview (optional, stacked PRs only)
 
-1.1. When the pull request is one layer of a stack, start the body with a stack overview above the opening. It is the only place that describes the other layers.
+1.1. This section is optional. Use it only when the pull request is already one layer of a stack. Most pull requests are standalone and start at Section 2.
 
-1.2. Detect a stack with `gh stack view --json` — exit code 2 means the branch is not in a stack. Without `gh stack`, the PR is stacked when its base branch is the head branch of another open PR (`gh pr view --json baseRefName`).
+1.2. When the pull request is one layer of a stack, start the body with a stack overview above the opening. It is the only place that describes the other layers.
 
-1.3. Open the block with `📚 Stack: <what the whole stack delivers>`. Follow it with one or two sentences that state the goal of the stack, the number of layers, the branch the stack sits on, and the review order. Say that each PR shows only its own diff.
+1.3. Never split work into layers, or open extra pull requests, to use this section. The stack must already exist.
 
-1.4. List the layers as a numbered list, bottom layer first. Each item holds the PR title, its `#number`, then an em dash and the role of that layer. Mark the current layer with `📍` and `(this PR)`.
+1.4. Detect a stack with `gh stack view --json` — exit code 2 means the branch is not in a stack. Without `gh stack`, the PR is stacked when its base branch is the head branch of another open PR (`gh pr view --json baseRefName`).
 
-1.5. Keep each layer line to one line, 25 words maximum. The line states what the layer owns, not how it works.
+1.5. Open the block with `📚 Stack: <what the whole stack delivers>`. Follow it with one or two sentences that state the goal of the stack, the number of layers, the branch the stack sits on, and the review order. Say that each PR shows only its own diff.
 
-1.6. Do not describe the other layers again. The What-changed bullets, the diagram, and the QA steps cover this PR's diff only.
+1.6. List the layers as a numbered list, bottom layer first. Each item holds the PR title, its `#number`, then an em dash and the role of that layer. Mark the current layer with `📍` and `(this PR)`.
 
-1.7. Put the same overview in every PR of the stack, with `📍` on that PR's own layer. When a layer is added, merged, or renamed, refresh the list in each open PR.
+1.7. Keep each layer line to one line, 25 words maximum. The line states what the layer owns, not how it works.
 
-1.8. A stacked PR does not target the default branch, so a closing keyword does nothing there (Section 7.4). Link the issue through the Development sidebar instead.
+1.8. Do not describe the other layers again. The What-changed bullets, the diagram, and the QA steps cover this PR's diff only.
+
+1.9. Put the same overview in every PR of the stack, with `📍` on that PR's own layer. When a layer is added, merged, or renamed, refresh the list in each open PR.
+
+1.10. A stacked PR does not target the default branch, so a closing keyword does nothing there (Section 7.4). Link the issue through the Development sidebar instead.
 
 **Example:**
 
@@ -209,7 +213,7 @@ flowchart LR
 
 This step is not optional. Run these checks on your draft, fix what you find, then deliver:
 
-1. If the PR is stacked, the body opens with the stack overview, the current layer carries `📍` and `(this PR)`, and no other layer's diff is described elsewhere.
+1. Check the stack overview. A standalone PR holds none. A stacked PR opens with it, the current layer carries `📍` and `(this PR)`, and no other layer's diff is described elsewhere.
 2. Count the opening sentences. More than two → cut to the bug and the fix.
 3. Count the What-changed bullets. More than six → merge them, or recommend a separate PR.
 4. Search the draft for `TL;DR`, `Verification`, `robust`, `comprehensive`, `properly`, `simply`. Delete every hit.
