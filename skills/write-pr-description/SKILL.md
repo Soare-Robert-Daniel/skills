@@ -85,11 +85,11 @@ Do not mark an existing outcome as added or changed merely because the pull requ
 
 ```mermaid
 flowchart LR
-    A[Existing trigger] --> B{Changed:<br/>superseding<br/>result exists?}:::changed
-    B -- yes --> C[Skip retry]
-    B -- no --> D[Retry] --> E{New:<br/>output already<br/>delivered?}:::added
-    E -- yes --> F[Stand down]
-    E -- no --> G[Process and send]
+    A["Existing trigger"] --> B{"Changed:<br/>superseding<br/>result exists?"}:::changed
+    B -- yes --> C["Skip retry"]
+    B -- no --> D["Retry"] --> E{"New:<br/>output already<br/>delivered?"}:::added
+    E -- yes --> F["Stand down"]
+    E -- no --> G["Process and send"]
 
     classDef added fill:#1a7f37,color:#fff,stroke:#116329,stroke-width:3px
     classDef changed fill:#9a6700,color:#fff,stroke:#5c3d00,stroke-width:3px,stroke-dasharray:6 3
@@ -100,6 +100,14 @@ flowchart LR
 3.8. Let the diagram carry sequence and branching. Keep the accompanying bullets for outcomes, caveats, or risk. Do not narrate every arrow again in prose. Omit the diagram only when the change has no meaningful flow to visualize.
 
 3.9. GitHub scales the rendered diagram to the page width, so the diagram's geometry sets the on-screen text size — font-size directives change nothing. Prefer `flowchart LR`. Keep decision labels to two or three short lines: Mermaid inscribes the text box inside a rhombus, so a long label balloons the shape and the whole diagram. When the branch criteria do not fit a short edge label, state them in the prose bullets instead.
+
+3.10. GitHub renders Mermaid in a sandboxed iframe and swallows the real error. Every failure — a parse error, a blocked iframe, an outdated Mermaid version — shows the same banner: `Unable to render rich display` above the raw code. Write defensively:
+
+- Wrap every node and edge label in double quotes: `A["Merge development → master"]`, `B{"New:<br/>commit?"}:::added`. Unquoted labels break on `(`, `)`, `{`, `}`, `|`, and `"`. Quotes keep `<br/>` and `:::class` intact.
+- Do not put a literal `"` inside a label. Reword the label instead.
+- Do not use `end` as a node ID — it is a reserved word in flowcharts. `End` and `"end"` inside a quoted label are safe.
+- GitHub's Mermaid version lags the latest release. Use plain flowchart syntax only. Do not use features from recent Mermaid releases.
+- When a diagram renders on [mermaid.live](https://mermaid.live) but GitHub still shows the banner, the syntax is not the cause. Reload the page and check for content blockers on `viewscreen.githubusercontent.com` before you rewrite the diagram.
 
 ## 4. Data changes
 
@@ -178,7 +186,7 @@ This step is not optional. Run these checks on your draft, fix what you find, th
 4. Search for `should`, `would`, `might`, `could`, and contractions (`'ll`, `'re`, `'s`). Replace a requirement with `must` and a possibility with `can`. Expand contractions.
 5. Count words in your three longest sentences. Over the 20/25 limit → split them.
 6. Check every external ticket reference: it names its system and links, never a bare `#id`.
-7. Check the diagram: ten nodes or fewer, every highlighted node has a `New:` or `Changed:` prefix, and every decision's outgoing labels answer its question and are mutually exclusive.
+7. Check the diagram: ten nodes or fewer, every label sits in double quotes with no `"` inside, no node ID is `end`, every highlighted node has a `New:` or `Changed:` prefix, and every decision's outgoing labels answer its question and are mutually exclusive.
 8. Check every QA step: it ends with a standalone `**Expect:**` line, and its path starts from a fixed place and names each screen.
 9. Check the closing keyword: it sits on its own line at the end of the body. If the PR does not target the default branch, remove the keyword and note the Development-sidebar step outside the description.
 10. Trace every fact to the diff, a commit, the issue, or the user's notes. Delete what does not trace.
