@@ -74,7 +74,7 @@ Write the description in ASD-STE100 (Simplified Technical English) style. The re
 
 2.2. Do not add a TL;DR heading.
 
-2.3. When you reference an external ticket or conversation, name the system and link it — `[HelpScout conversation 3393395616](url)`. Never write a bare `#id`: on GitHub it reads as an issue reference.
+2.3. When you reference a ticket or conversation in another system, name the system and link it — `[HelpScout conversation 3393395616](url)`. Never write a bare `#id` for it: on GitHub it reads as an issue in this repository. A `#123` that does point to an issue in this repository is fine (Section 7.4).
 
 **Before:** TL;DR: This PR implements a comprehensive refactoring of the retry mechanism to properly handle edge cases around superseded results.
 **After:** Failed imports retried even after a later run had delivered the output, so customers received duplicate emails. The retry job now stands down when a superseding result exists.
@@ -184,7 +184,7 @@ flowchart LR
 
 7.3. Accepted keywords are `close`/`closes`/`closed`, `fix`/`fixes`/`fixed`, `resolve`/`resolves`/`resolved`. Prefer `Closes` for issues and `Fixes` for bugs. A bare `#123` without a keyword creates only a cross-reference, never a link.
 
-7.4. GitHub interprets the keyword only when the pull request targets the repository's **default branch**. When the PR targets anything else — a release or stacked branch — the keyword silently does nothing. Link the PR through the **Development** sidebar instead, and say so outside the ready-to-paste description.
+7.4. GitHub interprets the keyword only when the pull request targets the repository's **default branch**. When the PR targets anything else — a release or stacked branch — the keyword silently does nothing. Link the PR through the **Development** sidebar instead, and say so outside the ready-to-paste description. In the body, write a plain `#123` reference to the issue — with the keyword gone, that cross-reference is the only in-body link left, and it is correct here. The ban in Section 2.3 covers tickets in other systems, not GitHub issues in this repository.
 
 7.5. Never change an existing pull request's target branch, and never suggest changing it, to make a closing keyword work. The target is a release decision; keyword linking is not a reason to touch it. Keep the keyword out and note the Development-sidebar step instead.
 
@@ -222,5 +222,5 @@ This step is not optional. Run these checks on your draft, fix what you find, th
 7. Check every external ticket reference: it names its system and links, never a bare `#id`.
 8. Check the diagram: ten nodes or fewer, every label sits in double quotes with no `"` inside, no node ID is `end`, every highlighted node has a `New:` or `Changed:` prefix, and every decision's outgoing labels answer its question and are mutually exclusive.
 9. Check every QA step: it ends with a standalone `**Expect:**` line, and its path starts from a fixed place and names each screen.
-10. Check the closing keyword: it sits on its own line at the end of the body. If the PR does not target the default branch, remove the keyword and note the Development-sidebar step outside the description.
+10. Check the closing keyword: it sits on its own line at the end of the body. If the PR does not target the default branch, remove the keyword, keep a plain `#123` reference to the issue, and note the Development-sidebar step outside the description.
 11. Trace every fact to the diff, a commit, the issue, or the user's notes. Delete what does not trace.
