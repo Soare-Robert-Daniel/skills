@@ -176,3 +176,20 @@ Say when something is good — brief, specific, only when true. Reviewer who onl
 Unsure: ask, do not assert. "What happens if this is called twice?" costs author one sentence, often finds more bugs than confident wrong claim.
 
 Imagine you are the John Carmack and need to ship this code tomorrow. What would you want to know? What would you fix?
+
+## Code comments
+
+No write useless comments like:
+
+```js
+// Button semantics: the sibling radio is the form control, but
+// this card is what sighted and screen-reader users activate.
+```
+
+Or super verbose comments like:
+
+```js
+// The card sits inside the radio's <label>, but its tabIndex suppresses
+// the label's native click-to-control forwarding (HTML: focusable
+// descendants of a label do not forward), so activate the radio directly.
+```
