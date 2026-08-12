@@ -193,3 +193,11 @@ Or super verbose comments like:
 // the label's native click-to-control forwarding (HTML: focusable
 // descendants of a label do not forward), so activate the radio directly.
 ```
+
+## Token Cost
+
+Each new line of code or comments have an attachked cost for AI agents. So need be mindfull of the future.
+
+When reviewing, check if a comment is too long or need to be removed. Check if a code can simplfied or removed.
+
+The more we do with less token, the more we win. We are a team of winners.
